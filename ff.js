@@ -4,9 +4,10 @@ const scrapeIt = require("scrape-it")
 const numberOfTeams = 10
 
 const managers = {}
+const managerRecords = {}
 const fetchTeamPromises = []
 for (let i = 1; i <= numberOfTeams; i++) {
-    const url = `https://football.fantasysports.yahoo.com/f1/631176/?module=standings&lhst=sched&sctype=team&scmid=${i}`
+    const url = `https://football.fantasysports.yahoo.com/f1/268567/?module=standings&lhst=sched&sctype=team&scmid=${i}`
     fetchTeamPromises.push(scrapeIt(url, {
         managers: {
             listItem: 'section#schedule div:nth-child(2) tbody tr',
@@ -20,13 +21,21 @@ for (let i = 1; i <= numberOfTeams; i++) {
         managerName: 'section#schedule li.Pbot-xxs'
     }).then(data => {
         const scores = []
+        let wins = 0
+        let loss = 0
         data.managers.forEach(manager => {
             if (manager.result) {
+                if (manager.result === 'Win') {
+                    wins++
+                } else {
+                    loss++
+                }
                 const gameScores = manager.score.split('-')
                 scores.push(gameScores[0].trim())
             }
         })
         managers[data.managerName] = scores
+        managerRecords[data.managerName] = { wins, loss }
     }))
 }
 
@@ -62,14 +71,16 @@ Promise.all(fetchTeamPromises).then(data => {
 
         output[name] = {
             totalWins: totalWins,
-            totalGames: gamesSoFar*totalWeeklyGames
+            totalGames: gamesSoFar*totalWeeklyGames,
+            actualWins: managerRecords[name].wins,
+            actualTotalGames: managerRecords[name].wins + managerRecords[name].loss
         }
         // console.log("Total Wins", totalWins)
         // console.log("Total Win PCT:", Number(totalWins/(gamesSoFar*totalWeeklyGames)).toFixed(2))
         // console.log("-----------------------------")
     })
 
-    console.log(output)
+    console.log(JSON.stringify(output))
 })
 
 
