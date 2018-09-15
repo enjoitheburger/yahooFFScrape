@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "scrape-it": "^3.3.3"
+    "scrape-it": "^5.0.5"
   }
 }

@@ -17,7 +17,7 @@ scrapeIt(url, {
     //data.rows.splice(0, 1)
     let managers = {}
     let week = 0
-    for (let row of data.rows) {
+    for (let row of data.data.rows) {
         const awayManagerName = row.away
         const homeManagerName = row.home
         if (awayManagerName && homeManagerName && row.result && row.result !== 'Preview') {
