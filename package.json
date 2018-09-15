@@ -2,10 +2,7 @@
   "name": "yahoofantasyscraper",
   "version": "1.0.0",
   "description": "Scrape scores from Yahoo Fantasy and calculate overall win percentages",
-  "main": "ff.js",
-  "scripts": {
-    "start": "node ff_espn.js > mockData.js && open index.html"
-  },
+  "main": "ff_espn.js",
   "author": "",
   "license": "ISC",
   "dependencies": {
