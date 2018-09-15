@@ -1,0 +1,160 @@
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<html>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Team Name</th>
+                <th scope="col">Total Wins</th>
+                <th scope="col">Total # Of Games</th>
+                <th scope="col">Total Win PCT</th>
+                <th scope="col">Actual Wins</th>
+                <th scope="col">Actual # of Games</th>
+                <th scope="col">Actual Win Percentage</th>
+                <th scope="col">Win Difference</th>
+            </tr>
+        </thead>
+        <tbody id="luckTableBody">
+        </tbody>
+    </table>
+</html>
+
+<script>
+    var fantasyData = {
+        "A Feast for Crowells": {
+            "actualWins": 8,
+            "totalWins": 61,
+            "totalGames": 176,
+            "totalNumberOfWeeks": 16
+        },
+        "Manning Crush Monday": {
+            "actualWins": 7,
+            "totalWins": 74,
+            "totalGames": 176,
+            "totalNumberOfWeeks": 16
+        },
+        "Beast of Boston": {
+            "actualWins": 8,
+            "totalWins": 128,
+            "totalGames": 165,
+            "totalNumberOfWeeks": 15
+        },
+        "Golden Tate Warriors": {
+            "actualWins": 9,
+            "totalWins": 114,
+            "totalGames": 165,
+            "totalNumberOfWeeks": 15
+        },
+        "Pryor balls off Jeff's face": {
+            "actualWins": 7,
+            "totalWins": 91,
+            "totalGames": 176,
+            "totalNumberOfWeeks": 16
+        },
+        "Forgive and Fournette": {
+            "actualWins": 4,
+            "totalWins": 103,
+            "totalGames": 176,
+            "totalNumberOfWeeks": 16
+        },
+        "Miami Lines Coach": {
+            "actualWins": 7,
+            "totalWins": 100,
+            "totalGames": 176,
+            "totalNumberOfWeeks": 16
+        },
+        "Booty Sweat": {
+            "actualWins": 6,
+            "totalWins": 61,
+            "totalGames": 176,
+            "totalNumberOfWeeks": 16
+        },
+        "Fly  Like A Falcon": {
+            "actualWins": 8,
+            "totalWins": 63,
+            "totalGames": 176,
+            "totalNumberOfWeeks": 16
+        },
+        "Dezervoir Dogs": {
+            "actualWins": 7,
+            "totalWins": 83,
+            "totalGames": 176,
+            "totalNumberOfWeeks": 16
+        },
+        "Hotel, Odell,  Holiday Inn": {
+            "actualWins": 7,
+            "totalWins": 63,
+            "totalGames": 176,
+            "totalNumberOfWeeks": 16
+        },
+        "Welker Texas Ranger": {
+            "actualWins": 5,
+            "totalWins": 94,
+            "totalGames": 176,
+            "totalNumberOfWeeks": 16
+        }};
+    const keys = Object.keys(fantasyData);
+
+    // Calculate percentages and conditional tinting
+    let luckiestDiff = 0;
+    let unluckiestDiff = 0;
+    for(teamName in fantasyData) {
+        const totalWinsPct = ((fantasyData[teamName].totalWins / fantasyData[teamName].totalGames) * 100).toFixed(2);
+        const acutalWinsPct = ((fantasyData[teamName].actualWins / fantasyData[teamName].totalNumberOfWeeks) * 100).toFixed(2);
+        const diffWinsPct = (acutalWinsPct - totalWinsPct);
+        
+        fantasyData[teamName].totalWinsPct = totalWinsPct
+        fantasyData[teamName].acutalWinsPct = acutalWinsPct
+        fantasyData[teamName].diffWinsPct = diffWinsPct;
+
+        if (diffWinsPct > luckiestDiff) {
+            luckiestDiff = diffWinsPct;
+        } else if (diffWinsPct < unluckiestDiff) {
+            unluckiestDiff = diffWinsPct;
+        }
+    }
+
+    for(teamName in fantasyData) {
+        let row = document.createElement("tr");
+        let teamNameElement = document.createElement("td");
+        let totalWinsElement = document.createElement("td");
+        let totalGamesElement = document.createElement("td");
+        let totalWinsPercentElement = document.createElement("td");
+        let actualWinsElement = document.createElement("td");
+        let actualNumberOfGamesElement = document.createElement("td");
+        let actualWinPercentageElement = document.createElement("td");
+        let winDifferenceElement = document.createElement("td");
+        
+        teamNameElement.innerText = teamName;
+        totalWinsElement.innerText = fantasyData[teamName].totalWins;
+        totalGamesElement.innerText = fantasyData[teamName].totalGames;
+        totalWinsPercentElement.innerText = fantasyData[teamName].totalWinsPct + "%";
+        actualWinsElement.innerText = fantasyData[teamName].actualWins
+        actualNumberOfGamesElement.innerText = fantasyData[teamName].totalNumberOfWeeks
+        actualWinPercentageElement.innerText = fantasyData[teamName].acutalWinsPct  + "%";
+        winDifferenceElement.innerText = fantasyData[teamName].diffWinsPct.toFixed(2)  + "%";
+
+        const diffWinsPct = fantasyData[teamName].diffWinsPct;
+        if (diffWinsPct > 0) {
+            const tintValue = (diffWinsPct / luckiestDiff).toFixed(1);
+            winDifferenceElement.style = `background-color: rgba(0, 255, 0, ${tintValue})`;
+        } else {
+            const tintValue = (diffWinsPct / unluckiestDiff).toFixed(1);
+            winDifferenceElement.style = `background-color: rgba(255, 0, 0, ${tintValue})`;
+        }
+
+        row.appendChild(teamNameElement);
+        row.appendChild(totalWinsElement);
+        row.appendChild(totalGamesElement);
+        row.appendChild(totalWinsPercentElement);
+        row.appendChild(actualWinsElement);
+        row.appendChild(actualNumberOfGamesElement);
+        row.appendChild(actualWinPercentageElement);
+        row.appendChild(winDifferenceElement);
+        document.getElementById("luckTableBody").appendChild(row);
+    }
+    
+    
+  
+</script>
