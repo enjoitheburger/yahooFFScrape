@@ -38,9 +38,9 @@ exports.calculate = (leagueId, seasonYear) => {
                 managers[homeManagerName].push(Number(results[1]))
 
                 if (Number(results[0]) > Number(results[1])) {
-                    output[awayManagerName] ? output[awayManagerName].actualWins++ : output[awayManagerName] = { actualWins: 0 }
+                    output[awayManagerName] ? output[awayManagerName].actualWins++ : output[awayManagerName] = { actualWins: 1 }
                 } else {
-                    output[homeManagerName] ? output[homeManagerName].actualWins++ : output[homeManagerName] = { actualWins: 0 }
+                    output[homeManagerName] ? output[homeManagerName].actualWins++ : output[homeManagerName] = { actualWins: 1 }
                 }
             }
         }
