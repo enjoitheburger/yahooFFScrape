@@ -71,7 +71,7 @@ scrapeIt(url, {
         // console.log("-----------------------------")
     })
     
-    console.log(JSON.stringify(output))
+    console.log("var fantasyData = " + JSON.stringify(output))
 })
 
 
