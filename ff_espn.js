@@ -39,8 +39,10 @@ exports.calculate = (leagueId, seasonYear) => {
 
                 if (Number(results[0]) > Number(results[1])) {
                     output[awayManagerName] ? output[awayManagerName].actualWins++ : output[awayManagerName] = { actualWins: 1 }
+                    if (!output[homeManagerName]) output[homeManagerName] = { actualWins: 0 }
                 } else {
                     output[homeManagerName] ? output[homeManagerName].actualWins++ : output[homeManagerName] = { actualWins: 1 }
+                    if (!output[awayManagerName]) output[awayManagerName] = { actualWins: 0 }
                 }
             }
         }
@@ -79,5 +81,8 @@ exports.calculate = (leagueId, seasonYear) => {
         //console.log("var fantasyData = " + JSON.stringify(output))
     })}
 
-
+// debug
+// this.calculate("165105", "2018").then((x) => {
+//     console.log(JSON.stringify(x))
+// })
 
