@@ -1,101 +1,140 @@
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <style>
-        body {
-            
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+</head>
+<html>
+
+<body id="page-container" class="container">
+    <h1 class="text-center mt-3">
+        Fantasy League Luckiness Calculator
+    </h1>
+    <div id="explanation" class="row mt-3">
+        <p class="mx-auto">
+            Ever wondered if someone in you league just got lucky?
+        </p>
+    </div>
+    <div id="select-platform" class="row mt-3">
+        <div class="mx-auto">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label id="selectESPN" class="btn btn-primary active">
+                    <!-- <input type="radio" name="options" id="selectESPN" autocomplete="off" data-toggle="tooltip" data-html="true" title="<img src='espn_help.png'></img>" checked> ESPN -->
+                    <input type="radio" name="options"  autocomplete="off" checked> ESPN
+                </label>
+                <label id="selectYahoo" class="btn btn-primary">
+                    <input type="radio" name="options" autocomplete="off"> Yahoo
+                </label>
+            </div>
+            <!-- <button class="btn btn-outline-primary">Yahoo</button>
+                    <button class="btn btn-outline-primary">ESPN</button> -->
+        </div>
+    </div>
+    <div id="input-league-data" class="row mt-3">
+        <div class="mx-auto">
+            <div>
+                <label for="leagueId">League Id</label>
+                <input class="form-control" id="leagueId" placeholder="e.g. 16105">
+                <!-- <small id="idHelp" class="form-text text-muted">
+                    <a href="">Where do I find my league Id?</a>
+                </small> -->
+            </div>
+            <div>
+                <label for="seasonYear">Season Year</label>
+                <input class="form-control" id="seasonYear" placeholder="2018">
+            </div>
+            <div>
+                <button id="calculate" class="btn btn-outline-secondary">Generate</button>
+            </div>
+        </div>
+    </div>
+    <div id="table-result" class="row mt-3">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Team Name</th>
+                    <th scope="col">Total Wins</th>
+                    <th scope="col">Total # Of Games</th>
+                    <th scope="col">Total Win PCT</th>
+                    <th scope="col">Actual Wins</th>
+                    <th scope="col">Actual # of Games</th>
+                    <th scope="col">Actual Win Percentage</th>
+                    <th scope="col">Win Difference</th>
+                </tr>
+            </thead>
+            <tbody id="luckTableBody">
+            </tbody>
+        </table>
+    </div>
+    <!-- <footer>FOOTER</footer> -->
+</body>
+
+</html>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+<script>
+
+    // $('#selectESPN').tooltip()
+
+    // const yahooButton = document.getElementById('selectYahoo');
+    // yahooButton.onclick = function () {
+    //     console.log("here");
+    // }
+
+    document.getElementById('calculate').onclick = function () {
+
+        var myNode = document.getElementById("luckTableBody");
+        while (myNode.firstChild) {
+            myNode.removeChild(myNode.firstChild);
         }
-    </style>
-    </head>
-    <html>
-        <body id="page-container" class="container">
-            <h1 class="text-center mt-3">
-                Fantasy League Luckiness Calculator
-            </h1>
-            <div id="explanation" class="row mt-3">
-                <p class="mx-auto">
-                    Ever wondered if someone in you league just got lucky?
-                </p>
-            </div>
-            <div id="select-platform" class="row mt-3">
-                <div class="mx-auto">
-                    <button class="btn btn-outline-primary">Yahoo</button>
-                    <button class="btn btn-outline-primary">ESPN</button>
-                </div>
-            </div>
-            <div id="input-league-data" class="row mt-3">
-                <div class="mx-auto">
-                    <input id="leagueId" class="form-control-inline" type="text" placeholder="leagueId" value="165105">
-                    <input id="seasonYear" class="form-control-inline" type="text" placeholder="seasonYear" value="2017">
-                    <button id="calculate" class="btn btn-outline-secondary">Generate</button>
-                </div>
-            </div>
-            <div id="table-result" class="row mt-3">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Team Name</th>
-                            <th scope="col">Total Wins</th>
-                            <th scope="col">Total # Of Games</th>
-                            <th scope="col">Total Win PCT</th>
-                            <th scope="col">Actual Wins</th>
-                            <th scope="col">Actual # of Games</th>
-                            <th scope="col">Actual Win Percentage</th>
-                            <th scope="col">Win Difference</th>
-                        </tr>
-                    </thead>
-                    <tbody id="luckTableBody">
-                    </tbody>
-                </table>
-            </div>
-            <footer>FOOTER</footer>
-        </body>
-    </html>
-    
-    <script>
-        
-        document.getElementById('calculate').onclick = function() {
 
-            var myNode = document.getElementById("luckTableBody");
-            while (myNode.firstChild) {
-                myNode.removeChild(myNode.firstChild);
-            }
 
-            myNode.innerHTML = "LOADING..."
+        myNode.innerHTML = "LOADING..."
 
-            const leagueId = document.getElementById("leagueId").value;
+
+        let url = "";
+        const yahooButton = document.getElementById('selectYahoo');
+        const leagueId = document.getElementById("leagueId").value;
+        if (yahooButton.classList.contains('active')) {
+            url = "https://98hr3nremj.execute-api.us-west-2.amazonaws.com/default/yahoofantasyLuck?leagueId=" + leagueId;
+        } else {
+            url = "https://98hr3nremj.execute-api.us-west-2.amazonaws.com/default/espnFantasyLuck?leagueId=" + leagueId;
             const seasonYear = document.getElementById("seasonYear").value;
-            let url = "https://98hr3nremj.execute-api.us-west-2.amazonaws.com/default/espnFantasyLuck?leagueId="+leagueId;
             if (seasonYear) {
-                url = url.concat("&seasonYear="+seasonYear);
+                url = url.concat("&seasonYear=" + seasonYear);
             }
-            fetch(url)
+        }
+        
+        fetch(url)
             .then(function (response) {
                 myNode.innerHTML = "";
                 return response.json();
             })
-            .then(function(fantasyData) {
+            .then(function (fantasyData) {
                 const keys = Object.keys(fantasyData);
-        
+
                 // Calculate percentages and conditional tinting
                 let luckiestDiff = 0;
                 let unluckiestDiff = 0;
-                for(teamName in fantasyData) {
+                for (teamName in fantasyData) {
                     const totalWinsPct = ((fantasyData[teamName].totalWins / fantasyData[teamName].totalGames) * 100).toFixed(2);
                     const acutalWinsPct = ((fantasyData[teamName].actualWins / fantasyData[teamName].totalNumberOfWeeks) * 100).toFixed(2);
                     const diffWinsPct = (acutalWinsPct - totalWinsPct);
-                    
+
                     fantasyData[teamName].totalWinsPct = totalWinsPct
                     fantasyData[teamName].acutalWinsPct = acutalWinsPct
                     fantasyData[teamName].diffWinsPct = diffWinsPct;
-        
+
                     if (diffWinsPct > luckiestDiff) {
                         luckiestDiff = diffWinsPct;
                     } else if (diffWinsPct < unluckiestDiff) {
                         unluckiestDiff = diffWinsPct;
                     }
                 }
-        
-                for(teamName in fantasyData) {
+
+                for (teamName in fantasyData) {
                     let row = document.createElement("tr");
                     let teamNameElement = document.createElement("td");
                     let totalWinsElement = document.createElement("td");
@@ -105,25 +144,25 @@
                     let actualNumberOfGamesElement = document.createElement("td");
                     let actualWinPercentageElement = document.createElement("td");
                     let winDifferenceElement = document.createElement("td");
-                    
+
                     teamNameElement.innerText = teamName;
                     totalWinsElement.innerText = fantasyData[teamName].totalWins;
                     totalGamesElement.innerText = fantasyData[teamName].totalGames;
                     totalWinsPercentElement.innerText = fantasyData[teamName].totalWinsPct + "%";
                     actualWinsElement.innerText = fantasyData[teamName].actualWins
                     actualNumberOfGamesElement.innerText = fantasyData[teamName].totalNumberOfWeeks
-                    actualWinPercentageElement.innerText = fantasyData[teamName].acutalWinsPct  + "%";
-                    winDifferenceElement.innerText = fantasyData[teamName].diffWinsPct.toFixed(2)  + "%";
-        
+                    actualWinPercentageElement.innerText = fantasyData[teamName].acutalWinsPct + "%";
+                    winDifferenceElement.innerText = fantasyData[teamName].diffWinsPct.toFixed(2) + "%";
+
                     const diffWinsPct = fantasyData[teamName].diffWinsPct;
                     if (diffWinsPct > 0) {
                         const tintValue = (diffWinsPct / luckiestDiff).toFixed(1);
-                        winDifferenceElement.style = "background-color: rgba(0, 255, 0, "+tintValue+")";
+                        winDifferenceElement.style = "background-color: rgba(0, 255, 0, " + tintValue + ")";
                     } else {
                         const tintValue = (diffWinsPct / unluckiestDiff).toFixed(1);
-                        winDifferenceElement.style = "background-color: rgba(255, 0, 0, "+tintValue+")";
+                        winDifferenceElement.style = "background-color: rgba(255, 0, 0, " + tintValue + ")";
                     }
-        
+
                     row.appendChild(teamNameElement);
                     row.appendChild(totalWinsElement);
                     row.appendChild(totalGamesElement);
@@ -135,6 +174,6 @@
                     document.getElementById("luckTableBody").appendChild(row);
                 }
             })
-        }
-      
-    </script>
+    }
+
+</script>
